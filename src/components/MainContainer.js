@@ -6,7 +6,6 @@ import { setBottom } from "../utils/videosSlice";
 
 const MainContainer = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     const container = document.querySelector(".main-container");
     let previousScrollHeight = 0;
@@ -19,13 +18,10 @@ const MainContainer = () => {
 
         // Check if the user has scrolled to the bottom
         if (scrollTop + clientHeight >= scrollHeight) {
-          console.log("Reached the bottom!");
           dispatch(setBottom(true));
           previousScrollHeight = scrollHeight;
         } else if (scrollHeight !== previousScrollHeight) {
           // Trigger the event when the content height changes
-          console.log("Content height changed!");
-          dispatch(setBottom(false));
           previousScrollHeight = scrollHeight;
         }
       }

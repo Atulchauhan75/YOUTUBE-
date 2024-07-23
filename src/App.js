@@ -7,27 +7,31 @@ import { Provider } from "react-redux";
 import store from "./utils/store";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import WatchPage from "./components/WatchPage";
-const appRouter=createBrowserRouter([{
-  path:"/",
-  element:<Body/>,
-  children:[
-    {
-      path:"/",
-      element: <MainContainer/>
-    },
-    {
-      path:"watch",
-      element:<WatchPage/>
-    }
-  ]
-}])
+import { YOUTUBE_VIDEOS_API } from "./utils/constants";
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Body />,
+    children: [
+      {
+        path: "/",
+        element: <MainContainer />,
+      },
+      {
+        path: "watch",
+        element: <WatchPage />,
+      },
+    ],
+  },
+]);
+
 function App() {
   return (
     <Provider store={store}>
       <div>
         {/* <h1 className="bg-red-50">Hello My name is Atul Chauhan</h1> */}
         <Head />
-        <RouterProvider router={appRouter}/>
+        <RouterProvider router={appRouter} />
         {/* <Body />  */}
 
         {/*
