@@ -37,6 +37,10 @@ const Head = () => {
       })
     );
   };
+  const handleSuggestionClick = (s) => {
+    setSearchQuery(s);
+    setShowSuggestions(false);
+  };
   return (
     <div className="fixed top-0 left-0 bg-white m-0  w-full block z-10 ">
       <div className="  grid grid-flow-col  p-3 shadow-lg  ">
@@ -52,6 +56,7 @@ const Head = () => {
             src="https://tse1.mm.bing.net/th?id=OIP.sCtdNjphAin-gugu0MNptAHaEK&pid=Api&P=0&h=180"
             alt="Youtube Logo"
             className="h-12 mx-2 "
+            onClick={() => console.log("hello")}
           />
         </div>
 
@@ -66,7 +71,7 @@ const Head = () => {
               onChange={(e) => setSearchQuery(e?.target?.value)}
               onFocus={() => setShowSuggestions(true)}
               //onBlur means FOCUS OUT
-              onBlur={() => setShowSuggestions(false)}
+              // onBlur={() => setShowSuggestions(false)}
             />
             <button className="border border-gray-500  px-5 p-2 bg-gray-200 rounded-r-full">
               🔍
@@ -74,9 +79,10 @@ const Head = () => {
             <div className=" ml-52 bg-white fixed  w-[36rem] border border-gray-200 rounded-lg">
               <ul>
                 {showSuggestions &&
-                  suggestions.map((s) => (
+                  suggestions.map((s, index) => (
                     <li
-                      key={s}
+                      onClick={() => handleSuggestionClick(s)}
+                      key={index}
                       className="py-2 px-3 shadow-sm hover:bg-gray-200 rounded-sm w-full "
                     >
                       🔍 {s}
