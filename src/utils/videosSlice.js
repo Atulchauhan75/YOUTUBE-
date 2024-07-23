@@ -4,16 +4,23 @@ const videoSlice = createSlice({
   name: "videoStore",
   initialState: {
     videos: [],
-    // nextToken: "",
+    nextToken: "",
+    setBottom: false,
   },
   reducers: {
     addVideos: (state, action) => {
-        state.videos = action.payload;
+      // console.log(state.videos);
+      // state.videos = action.payload;
+       state.videos.push(...action.payload);
+      // state.videos = [...state.videos, ...action.payload];
     },
-    // nextToken:(state,action)=>{
-    //     state.nextToken = action.payload;
-    // }
+    setNextToken: (state, action) => {
+      state.nextToken = action.payload;
+    },
+    setBottom: (state, action) => {
+      state.setBottom = action.payload;
+    },
   },
 });
-export const { addVideos } = videoSlice.actions;
+export const { addVideos, setNextToken, setBottom } = videoSlice.actions;
 export default videoSlice.reducer;
