@@ -1,3 +1,4 @@
+
 import React from "react";
 import Button from "./Button";
 
@@ -22,7 +23,7 @@ const ButtonList = () => {
   return (
       <div className="flex  pt-4 pb-3 pl-4  fixed top-[88px] left-[200px] bg-white  z-10 w-full ">
         {list.map((listitem, index) => (
-          <Button key={index} name={listitem} />
+          <Button key={index} name={listitem} id={index}/>
         ))}
     </div>
   );
