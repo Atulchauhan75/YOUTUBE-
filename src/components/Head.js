@@ -3,30 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
+import UserSearch from "./UserSearch";
+import {
+  Link,
+  NavLink,
+  Router,
+  useNavigate,
+  useRoutes,
+} from "react-router-dom";
+import { setSearchValue } from "../utils/userSearchSlice";
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchCache = useSelector((store) => store.search);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
   };
-  //This is DEBOUNCING
-  useEffect(() => {
-    //make API Call here
-    const timer = setTimeout(() => {
-      if (searchCache[searchQuery]) {
-        setSuggestions(searchCache[searchQuery]);
-      } else {
-        getSearchSuggestions();
-      }
-    }, 200);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [searchQuery]);
-
+  
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
@@ -40,7 +36,30 @@ const Head = () => {
   const handleSuggestionClick = (s) => {
     setSearchQuery(s);
     setShowSuggestions(false);
+    // <UserSearch query={searchQuery}/>
   };
+  const handleSearchClick = () => {
+    // alert("hf jh jh hj bj bj b");
+    console.log(searchQuery);
+    dispatch(setSearchValue(searchQuery));
+    navigate("/results");
+    setShowSuggestions(false);
+  };
+  
+    //This is DEBOUNCING
+    useEffect(() => {
+      //make API Call here
+      const timer = setTimeout(() => {
+        if (searchCache[searchQuery]) {
+          setSuggestions(searchCache[searchQuery]);
+        } else {
+          getSearchSuggestions();
+        }
+      }, 200);
+      return () => {
+        clearTimeout(timer);
+      };
+    }, [searchQuery]);
   return (
     <div className="fixed top-0 left-0 bg-white m-0  w-full block z-10 ">
       <div className="  grid grid-flow-col  p-3 shadow-lg  ">
@@ -73,7 +92,10 @@ const Head = () => {
               //onBlur means FOCUS OUT
               // onBlur={() => setShowSuggestions(false)}
             />
-            <button className="border border-gray-500  px-5 p-2 bg-gray-200 rounded-r-full">
+            <button
+              className="border border-gray-500  px-5 p-2 bg-gray-200 rounded-r-full"
+              onClick={() => handleSearchClick()}
+            >
               🔍
             </button>
             <div className=" ml-52 bg-white fixed  w-[36rem] border border-gray-200 rounded-lg">

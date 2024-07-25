@@ -21,7 +21,7 @@ const list = [
 ];
 const ButtonList = () => {
   return (
-      <div className="flex  pt-4 pb-3 pl-4  fixed top-[88px] left-[200px] bg-white  z-10 w-full ">
+      <div className="flex  pt-4 pb-3 pl-4  fixed top-[88px] left-[200px] bg-white  z-10 w-[1300px] ">
         {list.map((listitem, index) => (
           <Button key={index} name={listitem} id={index}/>
         ))}
