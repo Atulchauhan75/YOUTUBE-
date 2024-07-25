@@ -14,7 +14,7 @@ const VideoContainer = () => {
   const getVideos = async () => {
     try {
       // console.log("Fetching initial videos");
-
+      
       // Check if videos are already present
       if (videos.length === 0) {
         const data = await fetch(YOUTUBE_VIDEOS_API);

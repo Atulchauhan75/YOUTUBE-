@@ -5,9 +5,8 @@ import MainContainer from "./components/MainContainer";
 import Body from "./components/Body";
 import { Provider } from "react-redux";
 import store from "./utils/store";
-import { createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import {  Route, Routes } from "react-router-dom";
 import WatchPage from "./components/WatchPage";
-import { YOUTUBE_VIDEOS_API } from "./utils/constants";
 import UserSearch from "./components/UserSearch";
 
 
@@ -19,7 +18,6 @@ function App() {
         <Body/>
         <Routes>
           <Route path="/"  element={<MainContainer/>} />
-
           <Route path="/watch"  element={<WatchPage/>} />
           <Route path="/results"  element={<UserSearch/>} />
         </Routes>
