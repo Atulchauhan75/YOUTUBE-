@@ -44,10 +44,12 @@ const UserSearch = () => {
   return (
     <div className="relative left-[250px] top-14 overflow-x-hidden w-[1200px] h-auto m-8 p-8">
       {videosList && videosList.length > 0 ? (
-        videosList.map((video, index) => (
-          <div className="flex flex-col m-3 p-2 shadow-md" key={index}>
-            <UserSearchResults info={video} id={index} />
+        videosList.map((video, index) => ( 
+          // <Link to={"/watch?v=" + video?.id?.videoId} key={video?.id?.videoId}>
+          <div className="flex flex-col m-3 p-2 shadow-md">
+            <UserSearchResults info={video} />
           </div>
+          // </Link>
         ))
       ) : (
         <h1>Loading...</h1>
