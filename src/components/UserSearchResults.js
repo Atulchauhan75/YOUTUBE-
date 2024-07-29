@@ -1,16 +1,21 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {  toggleMenu } from "../utils/appSlice";
 
 const UserSearchResults = ({ info }) => {
 
   const navigate = useNavigate();
+  const dispatch=useDispatch();
   if (!info || !info.snippet) {
     return null;
   }
 
   const { thumbnails, channelTitle, title, description } = info.snippet;
   const handleClick = (videoInfo)=>{
+    dispatch(toggleMenu());
     navigate(`/watch?v=${videoInfo?.id?.videoId}`);
+
   }
   return (
     <div className="flex items-start p-4 hover:bg-slate-100 cursor-pointer"

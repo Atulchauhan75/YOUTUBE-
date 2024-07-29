@@ -1,8 +1,13 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback ,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../utils/appSlice";
+import { openMenu, toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
-import { cacheResults, setSearchQuery, setSuggestions, setShowSuggestions } from "../utils/searchSlice";
+import {
+  cacheResults,
+  setSearchQuery,
+  setSuggestions,
+  setShowSuggestions,
+} from "../utils/searchSlice";
 import { useNavigate } from "react-router-dom";
 import { setSearchValue } from "../utils/userSearchSlice";
 
@@ -11,9 +16,11 @@ const Head = () => {
   const suggestions = useSelector((store) => store.search.suggestions);
   const showSuggestions = useSelector((store) => store.search.showSuggestions);
   const searchCache = useSelector((store) => store.search.cache);
-  // const previousSaerch = useSelector((store)=> store.userSearch.previousSearchValue);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const inputRef = useRef(null);
+
 
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -33,15 +40,20 @@ const Head = () => {
   const handleSuggestionClick = (s) => {
     dispatch(setSearchQuery(s));
     dispatch(setSearchValue(s));
-    navigate("/results");
+    navigate(`/results/${searchQuery}`);
     dispatch(setShowSuggestions(false));
+    dispatch(openMenu());
+    inputRef.current.blur();
+    // setInputFocused(false);
   };
   
-  const handleSearchClick = (s) => {
-    // dispatch(setSearchQuery(s));
+  const handleSearchClick = () => {
     dispatch(setSearchValue(searchQuery));
-    navigate("/results");
+    navigate(`/results/${searchQuery}`);
     dispatch(setShowSuggestions(false));
+    dispatch(openMenu());
+    inputRef.current.blur();
+    // setInputFocused(false);
   };
 
   useEffect(() => {
@@ -59,7 +71,7 @@ const Head = () => {
   }, [searchQuery, searchCache, getSearchSuggestions, dispatch]);
 
   return (
-    <div className="fixed top-0 left-0 bg-white m-0 w-full block z-10 ">
+    <div className="fixed top-0 left-0 bg-white m-0 w-full block z-10">
       <div className="grid grid-flow-col p-3">
         {/* First section of head */}
         <div className="flex col-span-1 m-2">
@@ -82,13 +94,18 @@ const Head = () => {
           <div>
             <input
               className="mt-2 ml-52 w-[36rem] rounded-l-full px-5 border border-gray-500 p-2 shadow-sm rounded-md"
+              ref={inputRef}
               type="text"
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => dispatch(setSearchQuery(e?.target?.value))}
-              onFocus={() => dispatch(setShowSuggestions(true))}
-              // onBlur means FOCUS OUT
-              // onBlur={() => dispatch(setShowSuggestions(false))}
+              onFocus={() => {
+                dispatch(setShowSuggestions(true));
+                // setInputFocused(true);
+              }}
+              onBlur={() => {
+                  dispatch(setShowSuggestions(false));
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearchClick();

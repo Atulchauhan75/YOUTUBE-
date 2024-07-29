@@ -5,7 +5,7 @@ const userSearchSlice = createSlice({
   initialState: {
     searchValue: "",
     prevSearchValue: "",
-    searchedVideos:[],
+    searchedVideos: {}, // Changed from array to object
     nextToken: "",
     setBottom: false,
   },
@@ -14,10 +14,15 @@ const userSearchSlice = createSlice({
       state.prevSearchValue = state.searchValue;
       state.searchValue = action.payload;
     },
-    addSearchedVideos:(state,action)=>{
-      if(state.prevSearchValue!==state.searchValue){
-        state.searchedVideos=[];
-        state.searchedVideos.push(...action.payload);
+    addSearchedVideos: (state, action) => {
+      const { searchQuery, videos } = action.payload;
+      if (!state.searchedVideos[searchQuery]) {
+        state.searchedVideos[searchQuery] = [];
+      }
+      if (state.prevSearchValue !== state.searchValue) {
+        state.searchedVideos[state.searchValue] = videos;
+      } else {
+        state.searchedVideos[searchQuery].push(...videos);
       }
     },
     setNextToken: (state, action) => {
@@ -28,5 +33,6 @@ const userSearchSlice = createSlice({
     },
   },
 });
-export const {setSearchValue , addSearchedVideos ,setNextToken , setBottom} = userSearchSlice.actions;
+
+export const { setSearchValue, addSearchedVideos, setNextToken, setBottom } = userSearchSlice.actions;
 export default userSearchSlice.reducer;
