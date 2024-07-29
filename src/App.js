@@ -19,7 +19,8 @@ function App() {
         <Routes>
           <Route path="/"  element={<MainContainer/>} />
           <Route path="/watch"  element={<WatchPage/>} />
-          <Route path="/results"  element={<UserSearch/>} />
+          <Route path="/results/:searchQuery"  element={<UserSearch/>} />
+          {/* <Route path="/watch" element={<WatchingVideo/>}/> */}
         </Routes>
       </div>
     </Provider>

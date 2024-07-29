@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
-import { cacheResults } from "../utils/searchSlice";
+import { cacheResults, setSearchQuery, setSuggestions, setShowSuggestions } from "../utils/searchSlice";
 import { useNavigate } from "react-router-dom";
 import { setSearchValue } from "../utils/userSearchSlice";
 
 const Head = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchCache = useSelector((store) => store.search);
+  const searchQuery = useSelector((store) => store.search.searchQuery);
+  const suggestions = useSelector((store) => store.search.suggestions);
+  const showSuggestions = useSelector((store) => store.search.showSuggestions);
+  const searchCache = useSelector((store) => store.search.cache);
+  // const previousSaerch = useSelector((store)=> store.userSearch.previousSearchValue);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ const Head = () => {
   const getSearchSuggestions = useCallback(async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
     const json = await data.json();
-    setSuggestions(json[1]);
+    dispatch(setSuggestions(json[1]));
     dispatch(
       cacheResults({
         [searchQuery]: json[1],
@@ -30,24 +31,24 @@ const Head = () => {
   }, [searchQuery, dispatch]);
 
   const handleSuggestionClick = (s) => {
-    setSearchQuery(s);
-    dispatch(setSearchValue(searchQuery));
+    dispatch(setSearchQuery(s));
+    dispatch(setSearchValue(s));
     navigate("/results");
-    setShowSuggestions(false);
+    dispatch(setShowSuggestions(false));
   };
-
-  const handleSearchClick = () => {
-    // console.log(searchQuery);
+  
+  const handleSearchClick = (s) => {
+    // dispatch(setSearchQuery(s));
     dispatch(setSearchValue(searchQuery));
     navigate("/results");
-    setShowSuggestions(false);
+    dispatch(setShowSuggestions(false));
   };
 
   useEffect(() => {
     // Debouncing
     const timer = setTimeout(() => {
       if (searchCache[searchQuery]) {
-        setSuggestions(searchCache[searchQuery]);
+        dispatch(setSuggestions(searchCache[searchQuery]));
       } else {
         getSearchSuggestions();
       }
@@ -55,7 +56,7 @@ const Head = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchQuery, searchCache, getSearchSuggestions]);
+  }, [searchQuery, searchCache, getSearchSuggestions, dispatch]);
 
   return (
     <div className="fixed top-0 left-0 bg-white m-0 w-full block z-10 ">
@@ -84,10 +85,10 @@ const Head = () => {
               type="text"
               placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e?.target?.value)}
-              onFocus={() => setShowSuggestions(true)}
+              onChange={(e) => dispatch(setSearchQuery(e?.target?.value))}
+              onFocus={() => dispatch(setShowSuggestions(true))}
               // onBlur means FOCUS OUT
-              // onBlur={() => setShowSuggestions(false)}
+              // onBlur={() => dispatch(setShowSuggestions(false))}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   handleSearchClick();
@@ -96,7 +97,7 @@ const Head = () => {
             />
             <button
               className="border border-gray-500 px-5 p-2 bg-gray-200 rounded-r-full"
-              onClick={() => handleSearchClick()}
+              onClick={() => handleSearchClick(searchQuery)}
             >
               🔍
             </button>

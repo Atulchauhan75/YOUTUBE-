@@ -9,8 +9,12 @@ const UserSearch = () => {
   const videosList = useSelector((store) => store.userSearch.searchedVideos);
   const dispatch = useDispatch();
   
+  console.log(query)
   const getSearchResults = useCallback(async () => {
+    console.log("inside the results function " + query)
+    if (!query) return; // Make sure that query is not empty before making the API call
     try {
+      console.log("inside the try block " + query)
       const url = `${USER_SEARCH_API}${query}`;
       const data = await fetch(url);
       const json = await data.json();

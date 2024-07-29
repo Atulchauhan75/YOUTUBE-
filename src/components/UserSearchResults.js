@@ -1,21 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const UserSearchResults = ({ info, id }) => {
-  const navigate = useNavigate(); // Hook to handle navigation
+const UserSearchResults = ({ info }) => {
 
+  const navigate = useNavigate();
   if (!info || !info.snippet) {
     return null;
   }
 
   const { thumbnails, channelTitle, title, description } = info.snippet;
-
-  const handleClick = () => {
-    navigate('/watch'); // Navigate to the WatchPage component
-  };
-
+  const handleClick = (videoInfo)=>{
+    navigate(`/watch?v=${videoInfo?.id?.videoId}`);
+  }
   return (
-    <div className="flex items-start p-4 hover:bg-slate-100 cursor-pointer" onClick={handleClick}>
+    <div className="flex items-start p-4 hover:bg-slate-100 cursor-pointer"
+    onClick={()=>handleClick(info)}>
       {thumbnails && (
         <img
           src={thumbnails.high.url}

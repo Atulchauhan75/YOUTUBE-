@@ -4,16 +4,21 @@ const userSearchSlice = createSlice({
   name: "userSearch",
   initialState: {
     searchValue: "",
+    prevSearchValue: "",
     searchedVideos:[],
     nextToken: "",
     setBottom: false,
   },
   reducers: {
     setSearchValue: (state, action) => {
+      state.prevSearchValue = state.searchValue;
       state.searchValue = action.payload;
     },
     addSearchedVideos:(state,action)=>{
+      if(state.prevSearchValue!==state.searchValue){
+        state.searchedVideos=[];
         state.searchedVideos.push(...action.payload);
+      }
     },
     setNextToken: (state, action) => {
       state.nextToken = action.payload;
