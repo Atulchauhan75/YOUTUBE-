@@ -22,7 +22,7 @@ const SideBar = () => {
         <li className="hover:bg-black px-2 hover:text-white rounded-md p-1">Music</li>
         <li className="hover:bg-black px-2 hover:text-white rounded-md p-1">Sports</li>
         <li className="hover:bg-black px-2 hover:text-white rounded-md p-1">Gaming</li>
-        <li className="hover:bg-black px-2 hover:text-white rounded-md p-1">Movies</li>
+        <li className="hover:bg-black px-2 hover:text-white rounded-md p-1">Movies on top</li>
       </ul>
       <h1 className="font-bold">Watch Later</h1>
       <ul className="border-b-2 border-gray-300 rounded-lg">

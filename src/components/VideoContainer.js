@@ -4,11 +4,9 @@ import VideoCard from "./VideoCard";
 // import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addVideos, setBottom, setNextToken } from "../utils/videosSlice";
-// import { toggleMenu } from "../utils/appSlice";
 
 const VideoContainer = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const videos = useSelector((store) => store.videoStore.videos);
   const nextToken = useSelector((store) => store.videoStore.nextToken);
   const bottomReached = useSelector((store) => store.videoStore.setBottom);
@@ -18,6 +16,7 @@ const VideoContainer = () => {
       if (videos.length === 0) {
         const data = await fetch(YOUTUBE_VIDEOS_API);
         const json = await data.json();
+        console.log(json);
         dispatch(setNextToken(json?.nextPageToken));
         dispatch(addVideos(json?.items));
       }

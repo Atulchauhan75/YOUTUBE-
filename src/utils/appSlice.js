@@ -15,7 +15,7 @@ const appSlice = createSlice({
       state.closeMenu = true;
     },
     openMenu: (state, action) => {
-      state.openMenu =true;
+      state.openMenu =action.payload;
     },
   },
 });
